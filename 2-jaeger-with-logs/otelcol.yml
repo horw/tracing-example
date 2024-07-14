@@ -1,0 +1,43 @@
+# Receive signals over gRPC and HTTP
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+exporters:
+  debug:
+    verbosity: detailed
+
+  otlphttp:
+    endpoint: http://loki:3100/otlp/
+
+  otlp:
+    endpoint: jaeger:4317
+    tls:
+      insecure: true
+      insecure_skip_verify: true
+  otlp/2:
+    endpoint: tempo:4317
+    tls:
+      insecure: true
+      insecure_skip_verify: true
+
+processors:
+
+  batch:
+
+  attributes:
+    actions:
+      - action: insert
+        key: loki.attribute.labels
+        value: label, duration, http.method, http.url, http.host, http.client_ip, http.user_agent, http.request_id, http.status_code, iam.user_id
+
+service:
+  pipelines:
+    traces:
+      receivers: [ otlp ]
+      exporters: [ otlp, otlp/2]
+    logs:
+      receivers: [ otlp ]
+      processors: [attributes]
+      exporters: [ otlphttp ]
