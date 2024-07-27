@@ -1,0 +1,19 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+
+exporters:
+  prometheus:
+    endpoint: 0.0.0.0:8899
+    metric_expiration: 30s
+
+processors:
+  batch:
+
+service:
+  pipelines:
+    metrics:
+      receivers: [ otlp ]
+      exporters: [ prometheus ]

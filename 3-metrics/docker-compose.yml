@@ -1,0 +1,25 @@
+services:
+
+  otelcol:
+    image: otel/opentelemetry-collector
+    restart: always
+    network_mode: host
+    volumes:
+      - ./otelcol.yml:/etc/otelcol/config.yaml
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    network_mode: host
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+
+  grafana:
+    image: grafana/grafana:10.4.2
+    network_mode: host
+    volumes:
+      - ./etc/grafana/:/etc/grafana/provisioning/datasources
+      - ./etc/dashboards.yaml:/etc/grafana/provisioning/dashboards/dashboards.yaml
+      - ./etc/dashboards:/etc/grafana/dashboards
