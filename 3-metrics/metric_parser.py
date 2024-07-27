@@ -36,7 +36,7 @@ def get_cpu_usage_callback(_: CallbackOptions):
 
 
 def get_folder_memory_usage(_: CallbackOptions):
-    command = 'sudo du -c --max-depth=0 /var/log'
+    command = 'du -c --max-depth=0 /var/log'
     output = subprocess.check_output(command, shell=True)
     for line in output.decode().split('\n'):
         result = re.search("(.+)\ttotal", line)
@@ -98,4 +98,6 @@ meter.create_observable_gauge(
     description="per-folder",
     unit="%")
 
-reader.collect()
+while True:
+    reader.collect()
+    time.sleep(10)

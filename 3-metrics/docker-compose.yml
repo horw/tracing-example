@@ -7,19 +7,26 @@ services:
     volumes:
       - ./otelcol.yml:/etc/otelcol/config.yaml
 
-  prometheus:
+  prometheus-test:
     image: prom/prometheus
-    container_name: prometheus
     network_mode: host
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
 
-  grafana:
+  grafana-test:
     image: grafana/grafana:10.4.2
     network_mode: host
     volumes:
       - ./etc/grafana/:/etc/grafana/provisioning/datasources
       - ./etc/dashboards.yaml:/etc/grafana/provisioning/dashboards/dashboards.yaml
       - ./etc/dashboards:/etc/grafana/dashboards
+
+  metric-job-test:
+    build:
+      context: .
+    network_mode: host
+    volumes:
+      - /var/log:/var/log:ro
+    command: "python metric_parser.py"
