@@ -41,7 +41,7 @@ def get_folder_memory_usage(_: CallbackOptions):
     for line in output.decode().split('\n'):
         result = re.search("(.+)\ttotal", line)
         if result:
-            yield Observation(int(result.group(1)) / 1024 / 1024 / 1024, {"folder-name": 'logs'})
+            yield Observation(int(result.group(1)) / 1024 / 1024 , {"folder-name": 'logs'})
 
 
 def get_disk_usage(_: CallbackOptions):
