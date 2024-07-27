@@ -46,7 +46,7 @@ def get_folder_memory_usage(_: CallbackOptions):
 
 def get_disk_usage(_: CallbackOptions):
     stat = shutil.disk_usage('/')
-    yield Observation(stat.used / stat.total)
+    yield Observation(stat.used / stat.total * 100)
 
 
 def get_ram_usage_callback(_: CallbackOptions):
