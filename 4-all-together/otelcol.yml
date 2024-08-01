@@ -3,11 +3,23 @@ receivers:
     protocols:
       grpc:
         endpoint: 0.0.0.0:4317
-
+  
+  hostmetrics:
+    scrapers:
+      cpu:
+      disk:
+      filesystem:
+      load:
+      memory:
+      network:
+      process:
+      processes:
+      paging:
+  
 exporters:
   prometheus:
     endpoint: 0.0.0.0:8899
-    metric_expiration: 30s
+    metric_expiration: 120s
 
   otlphttp:
     endpoint: http://loki:3100/otlp/
@@ -24,7 +36,7 @@ processors:
 service:
   pipelines:
     metrics:
-      receivers: [ otlp ]
+      receivers: [ otlp, hostmetrics ]
       exporters: [ prometheus ]
     traces:
       receivers: [ otlp ]

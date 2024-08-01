@@ -3,6 +3,6 @@ global:
   evaluation_interval: 15s
 
 scrape_configs:
-  - job_name: 'ind-test'
+  - job_name: 'otelcol'
     static_configs:
-      - targets: ['localhost:8899']
+      - targets: ['otelcol:8899']
